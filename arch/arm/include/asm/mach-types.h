@@ -493,6 +493,7 @@ extern unsigned int __machine_arch_type;
 #define MACH_TYPE_HTC_SPV_M700         2860
 #define MACH_TYPE_MX257SX              2861
 #define MACH_TYPE_GONI                 2862
+#define MACH_TYPE_SMDKV210             2862
 #define MACH_TYPE_MSM8X55_SVLTE_FFA    2863
 #define MACH_TYPE_MSM8X55_SVLTE_SURF   2864
 #define MACH_TYPE_QUICKSTEP            2865

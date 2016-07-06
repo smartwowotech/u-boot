@@ -4,8 +4,8 @@ choice
 	prompt "S5PC1XX board select"
 	optional
 
-config TARGET_S5P_GONI
-	bool "S5P Goni board"
+config TARGET_S5P_V210 
+	bool "S5P Smdkv210 board"
 	select OF_CONTROL
 
 config TARGET_SMDKC100
@@ -17,7 +17,7 @@ endchoice
 config SYS_SOC
 	default "s5pc1xx"
 
-source "board/samsung/goni/Kconfig"
+source "board/samsung/smdkv210/Kconfig"
 source "board/samsung/smdkc100/Kconfig"
 
 endif

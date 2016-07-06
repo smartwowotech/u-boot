@@ -1,0 +1,6 @@
+S5P_V210 BOARD
+M:	Robert Baldyga <r.baldyga@samsung.com>
+S:	Maintained
+F:	board/samsung/smdkv210/
+F:	include/configs/s5p_v210.h
+F:	configs/s5p_v210_defconfig
