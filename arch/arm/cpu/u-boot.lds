@@ -42,7 +42,10 @@ SECTIONS
 	{
 		*(.__image_copy_start)
 		*(.vectors)
-		CPUDIR/start.o (.text*)
+/*		CONFIG_BOARDDIR/s5pv210/led.o (.text*)
+		CONFIG_BOARDDIR/s5pv210/uart.o (.text*)
+		CONFIG_BOARDDIR/s5pv210/memory.o (.text*)
+	*/	CPUDIR/start.o (.text*)
 		*(.text*)
 	}
 

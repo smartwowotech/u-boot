@@ -22,7 +22,8 @@
  */
 
 	.globl lowlevel_init
-lowlevel_init:
+lowlevel_init:  @ 在16K之内,不需要修改 lds 脚本
+	@ bl led1_on
 	mov	r11, lr
 
 	/* r5 has always zero */
@@ -165,7 +166,7 @@ skip_check_didle:
 
 	/* setting SRAM */
 	ldreq	r0, =S5PC100_SROMC_BASE
-	ldrne	r0, =S5PC110_SROMC_BASE
+	ldrne	r0, =S5PC110_SROMC_BASE  @jason s5p_v210
 	ldr	r1, =0x9
 	str	r1, [r0]
 
@@ -193,8 +194,23 @@ skip_check_didle:
 
 	/* for UART */
 	bl	uart_asm_init
-
-	bl	internal_ram_init
+	bl my_uart1_asm_init
+	ldr r4, =0x1234abcd
+	bl my_uart1_display
+	@ bl led1_off
+	/* for DDR2 SDRAM*/
+	@ bl led1_on
+	bl mem_ctrl_asm_init
+	
+	ldr r4, =0x1234abcf
+	bl my_uart1_display
+	
+	ldr r0, =0x100f
+	ldr r1, =0x30000000
+	str r0, [r1]
+	ldr r4, [r1]
+	bl my_uart1_display
+	//bl	internal_ram_init
 
 	cmp	r7, r8
 	/* Clear wakeup status register */

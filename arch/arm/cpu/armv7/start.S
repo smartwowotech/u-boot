@@ -33,10 +33,11 @@
 
 reset:
 	/* Allow the board to save important registers */
-	b	save_boot_params
+	b	save_boot_params @2.什么也没干,调到下面运行。该处应该是可用于保存起始参数
 save_boot_params_ret:
+bl led1_on
 	/*
-	 * disable interrupts (FIQ and IRQ), also set the cpu to SVC32 mode,
+	 * 3. disable interrupts (FIQ and IRQ), also set the cpu to SVC32 mode,
 	 * except if in HYP mode already
 	 */
 	mrs	r0, cpsr
@@ -59,12 +60,13 @@ save_boot_params_ret:
 	mcr	p15, 0, r0, c1, c0, 0	@ Write CP15 SCTLR Register
 
 	/* Set vector address in CP15 VBAR register */
-	ldr	r0, =_start
+	ldr	r0, =_start    @4.告知异常向量表的基地址
 	mcr	p15, 0, r0, c12, c0, 0	@Set VBAR
 #endif
 
 	/* the mask ROM code should have PLL and others stable */
 #ifndef CONFIG_SKIP_LOWLEVEL_INIT
+	@ bl led1_on
 	bl	cpu_init_cp15
 	bl	cpu_init_crit
 #endif
@@ -266,6 +268,25 @@ ENTRY(cpu_init_crit)
 	 * basic memory. Go here to bump up clock rate and handle
 	 * wake up conditions.
 	 */
+	 
+	 /*Begin:Add by hufei,2016/07/10*/
+	 /*电源管理，保持供电*/
+	 /* PS_HOLD(GPJ2_5) set to output high */
+	
+	.equ  ELFIN_GPIO_BASE,	0xE0200000
+	.equ  GPJ2CON_OFFSET,	0x280 
+	.equ  GPJ2DAT_OFFSET,	0x284 
+	.equ  GPJ2PUD_OFFSET,	0x288 
+
+    ldr		r0, =ELFIN_GPIO_BASE
+    ldr		r1, =0x00100000
+    str		r1, [r0, #GPJ2CON_OFFSET]
+    ldr		r1, =0x0400
+    str		r1, [r0, #GPJ2PUD_OFFSET]
+    ldr		r1, =0x20
+    str		r1, [r0, #GPJ2DAT_OFFSET]
+	/*End:Add by johnny,2016/05/22*/
+@	bl led1_on
 	b	lowlevel_init		@ go setup pll,mux,memory
 ENDPROC(cpu_init_crit)
 #endif

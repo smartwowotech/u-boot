@@ -8,6 +8,8 @@
 # SPDX-License-Identifier:	GPL-2.0+
 #
 
-obj-y	:= smdkv210.o onenand.o
-obj-y	+= lowlevel_init.o
-obj-y 	+= s5pv210/
+obj-y	:= memory.o led.o uart.o  
+ 
+#extra-y	:= led.o 
+#extra-y	+= uart.o 
+#extra-y	+= memory.o 
