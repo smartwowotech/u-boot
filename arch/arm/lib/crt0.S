@@ -65,7 +65,8 @@
  */
 
 ENTRY(_main)
-
+	 bl led1_off
+	@ bl led1_on
 /*
  * Set up initial C runtime environment and call board_init_f(0).
  */
@@ -73,6 +74,7 @@ ENTRY(_main)
 #if defined(CONFIG_SPL_BUILD) && defined(CONFIG_SPL_STACK)
 	ldr	sp, =(CONFIG_SPL_STACK)
 #else
+	//Jason
 	ldr	sp, =(CONFIG_SYS_INIT_SP_ADDR)
 #endif
 #if defined(CONFIG_CPU_V7M)	/* v7M forbids using SP as BIC destination */
@@ -80,14 +82,34 @@ ENTRY(_main)
 	bic	r3, r3, #7
 	mov	sp, r3
 #else
+	//Jason
 	bic	sp, sp, #7	/* 8-byte alignment for ABI compliance */
 #endif
-	mov	r0, sp
+
+bl led1_on
+
+//Jason for test	
+mov r8, #0x33       @0x30 <=> 0  0x31 <=> 1
+ldr r10, =0xE2900020
+str r8, [r10]			@direction print
+
+	mov	r0, sp  @Jason sp: 0x23000000
 	bl	board_init_f_alloc_reserve
 	mov	sp, r0
+	
+//Jason for test	
+mov r8, #0x34       @0x30 <=> 0  0x31 <=> 1
+ldr r10, =0xE2900020
+str r8, [r10]			@direction print
+	
 	/* set up gd here, outside any C code */
 	mov	r9, r0
 	bl	board_init_f_init_reserve
+	
+//Jason for test	
+mov r8, #0x35       @0x30 <=> 0  0x31 <=> 1
+ldr r10, =0xE2900020
+str r8, [r10]			@direction print
 
 	mov	r0, #0
 	bl	board_init_f

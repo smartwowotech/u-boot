@@ -30,7 +30,11 @@
 #define CONFIG_SYS_CLK_FREQ_C110	24000000
 
 /* DRAM Base */
+/* 
 #define CONFIG_SYS_SDRAM_BASE		0x30000000
+ Modify by Jason, reference by s5pv210 datasheet memory map
+*/
+#define CONFIG_SYS_SDRAM_BASE		0x20000000
 
 /* Text Base */
 #define CONFIG_SYS_TEXT_BASE		0x34800000
@@ -47,7 +51,11 @@
 /*
  * select serial console configuration
  */
-#define CONFIG_SERIAL2			1	/* use SERIAL2 */
+/*
+#define CONFIG_SERIAL2			1	
+  Modify by Jason for print
+*/
+#define CONFIG_SERIAL1			1	/* use SERIAL2 */
 #define CONFIG_BAUDRATE			115200
 
 /* MMC */

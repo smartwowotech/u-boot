@@ -7,9 +7,9 @@ ENTRY(mem_ctrl_asm_init)
 @ bl led1_off
 @ bl led1_on
 /*
-mov r11, #0x30       @0x30 <=> 0  0x31 <=> 1
+mov r9, #0x30       @0x30 <=> 0  0x31 <=> 1
 ldr r10, =0xE2900020
-str r11, [r10]			@direction print
+str r9, [r10]			@direction print
 */
 #ifndef CONFIG_EVT1
 

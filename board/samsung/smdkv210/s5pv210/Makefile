@@ -7,6 +7,7 @@
 #
 # SPDX-License-Identifier:	GPL-2.0+
 #
+
 # test.o for compile success.
 obj-y	:= test.o 
  

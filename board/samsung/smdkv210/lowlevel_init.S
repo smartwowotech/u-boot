@@ -22,9 +22,9 @@
  */
 
 	.globl lowlevel_init
-lowlevel_init: 
+lowlevel_init:  @ 在16K之内,不需要修改 lds 脚本
 	@ bl led1_on
-	mov	r11, lr   @ ?:R11????,?????????bl???
+	mov	r11, lr   @ 注：R11不能修改，用于返回上一次使用bl指令处
 
 	/* r5 has always zero */
 	mov	r5, #0
@@ -195,17 +195,16 @@ skip_check_didle:
 	/* for UART */
 	bl	uart_asm_init
 	bl my_uart1_asm_init
-	ldr r4, =0x1234abcd
+	ldr r4, =0x1234abcd  @test uart work
 	bl my_uart1_display
-	@ bl led1_off
+
 	/* for DDR2 SDRAM*/
-	@ bl led1_on
 	bl mem_ctrl_asm_init
 	
 	ldr r4, =0x1234abcf
 	bl my_uart1_display
 	
-	ldr r0, =0x100d  @memory ??100B, ???
+	ldr r0, =0x100d  @memory 存储100B, 并打印
 	ldr r1, =0x30000000
 	str r0, [r1]
 	ldr r4, [r1]
@@ -249,6 +248,7 @@ lockloop:
 	nop
 
 1:
+	 bl led1_on
 	mov	lr, r11
 	mov	pc, lr
 

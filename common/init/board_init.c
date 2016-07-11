@@ -61,7 +61,14 @@ ulong board_init_f_alloc_reserve(ulong top)
 #endif
 	/* LAST : reserve GD (rounded up to a multiple of 16 bytes) */
 	top = rounddown(top-sizeof(struct global_data), 16);
-
+/* Jason
+#define rounddown(x, y) (				\
+{							\
+	typeof(x) __x = (x);				\
+	__x - (__x % (y));				\
+}							\
+)
+*/
 	return top;
 }
 
