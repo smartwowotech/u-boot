@@ -35,7 +35,7 @@ reset:
 	/* Allow the board to save important registers */
 	b	save_boot_params @2.什么也没干,调到下面运行。该处应该是可用于保存起始参数
 save_boot_params_ret:
-bl led1_on
+@ bl led1_on
 	/*
 	 * 3. disable interrupts (FIQ and IRQ), also set the cpu to SVC32 mode,
 	 * except if in HYP mode already
@@ -69,6 +69,7 @@ bl led1_on
 	@ bl led1_on
 	bl	cpu_init_cp15
 	bl	cpu_init_crit
+	@ bl led1_on
 #endif
 
 	bl	_main
@@ -251,6 +252,24 @@ skip_errata_621766:
 
 	mov	pc, r5			@ back to my caller
 ENDPROC(cpu_init_cp15)
+	 
+/*Begin:Add by Jason,2016/07/10*/
+	 /*电源管理，保持供电*/
+	 /* PS_HOLD(GPJ2_5) set to output high */
+	
+	.equ  ELFIN_GPIO_BASE,	0xE0200000
+	.equ  GPJ2CON_OFFSET,	0x280 
+	.equ  GPJ2DAT_OFFSET,	0x284 
+	.equ  GPJ2PUD_OFFSET,	0x288 
+
+    ldr		r0, =ELFIN_GPIO_BASE
+    ldr		r1, =0x00100000
+    str		r1, [r0, #GPJ2CON_OFFSET]
+    ldr		r1, =0x0400
+    str		r1, [r0, #GPJ2PUD_OFFSET]
+    ldr		r1, =0x20
+    str		r1, [r0, #GPJ2DAT_OFFSET]
+/*End:Add by Jason,2016/07/10*/
 
 #ifndef CONFIG_SKIP_LOWLEVEL_INIT
 /*************************************************************************
@@ -268,25 +287,9 @@ ENTRY(cpu_init_crit)
 	 * basic memory. Go here to bump up clock rate and handle
 	 * wake up conditions.
 	 */
-	 
-	 /*Begin:Add by hufei,2016/07/10*/
-	 /*电源管理，保持供电*/
-	 /* PS_HOLD(GPJ2_5) set to output high */
-	
-	.equ  ELFIN_GPIO_BASE,	0xE0200000
-	.equ  GPJ2CON_OFFSET,	0x280 
-	.equ  GPJ2DAT_OFFSET,	0x284 
-	.equ  GPJ2PUD_OFFSET,	0x288 
 
-    ldr		r0, =ELFIN_GPIO_BASE
-    ldr		r1, =0x00100000
-    str		r1, [r0, #GPJ2CON_OFFSET]
-    ldr		r1, =0x0400
-    str		r1, [r0, #GPJ2PUD_OFFSET]
-    ldr		r1, =0x20
-    str		r1, [r0, #GPJ2DAT_OFFSET]
-	/*End:Add by johnny,2016/05/22*/
 @	bl led1_on
 	b	lowlevel_init		@ go setup pll,mux,memory
+@	bl led1_on
 ENDPROC(cpu_init_crit)
 #endif

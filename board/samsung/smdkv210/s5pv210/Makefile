@@ -7,9 +7,9 @@
 #
 # SPDX-License-Identifier:	GPL-2.0+
 #
-
-obj-y	:= memory.o led.o uart.o  
+// test.o for compile success.
+obj-y	:= test.o 
  
-#extra-y	:= led.o 
+extra-y	:= led.o memory.o uart.o 
 #extra-y	+= uart.o 
 #extra-y	+= memory.o 

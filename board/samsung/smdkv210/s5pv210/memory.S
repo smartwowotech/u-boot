@@ -6,10 +6,12 @@
 ENTRY(mem_ctrl_asm_init)
 @ bl led1_off
 @ bl led1_on
+/*
 mov r11, #0x30       @0x30 <=> 0  0x31 <=> 1
 ldr r10, =0xE2900020
 str r11, [r10]			@direction print
-//#ifndef CONFIG_EVT1
+*/
+#ifndef CONFIG_EVT1
 
 	ldr     r0, =ASYNC_MSYS_DMC0_BASE
 
@@ -20,7 +22,7 @@ str r11, [r10]			@direction print
 	ldr     r1, =0x0
 	str     r1, [r0, #0xC]
 
-//#endif
+#endif
 
 #ifdef CONFIG_MCP_SINGLE
 
@@ -163,18 +165,7 @@ find_lock_val:
 
 #	ldr r4, =0x1234abc1
 #	bl my_uart1_display
-/*
-delay1_1ms:
-	mov r11, #0
-	ldr r12, =0x30D400 @200MHz = 0x30D40
-delay1_:
-	add r11, r11, #0x1
-	cmp r11, r12
-	bne delay1_
-	*/
-mov r11, #0x31        @0x30 <=> 0  0x31 <=> 1
-ldr r10, =0xE2900020
-str r11, [r10]			@direction print
+
 
 	ldr	r1, =0x00010400				@DirectCmd	chip0 EMRS1 (MEM DLL on, DQS# disable)
 
@@ -182,9 +173,8 @@ str r11, [r10]			@direction print
 	
 	ldr	r1, =0x00000542				@DirectCmd	chip0 MRS (MEM DLL reset) CL=4, BL=4
 	str	r1, [r0, #DMC_DIRECTCMD]
-mov r11, #0x32        @0x30 <=> 0  0x31 <=> 1
-ldr r10, =0xE2900020
-str r11, [r10]			@direction print
+
+
 	ldr	r1, =0x01000000				@DirectCmd	chip0 PALL
 	str	r1, [r0, #DMC_DIRECTCMD]
 
@@ -193,9 +183,7 @@ str r11, [r10]			@direction print
 
 	ldr	r1, =0x05000000				@DirectCmd	chip0 REFA
 	str	r1, [r0, #DMC_DIRECTCMD]
-mov r11, #0x31        @0x30 <=> 0  0x31 <=> 1
-ldr r10, =0xE2900020
-str r11, [r10]			@direction print
+
 	ldr	r1, =0x00000442				@DirectCmd	chip0 MRS (MEM DLL unreset)
 	str	r1, [r0, #DMC_DIRECTCMD]
 
@@ -226,9 +214,6 @@ str r11, [r10]			@direction print
 	ldr	r1, =0x01100000				@DirectCmd	chip1 PALL
 	str	r1, [r0, #DMC_DIRECTCMD]
 	
-mov r11, #0x33       @0x30 <=> 0  0x31 <=> 1
-ldr r10, =0xE2900020
-str r11, [r10]			@direction print
 
 	ldr	r1, =0x05100000				@DirectCmd	chip1 REFA
 	str	r1, [r0, #DMC_DIRECTCMD]
@@ -247,7 +232,7 @@ str r11, [r10]			@direction print
 		
 	ldr	r1, =0x0FF02030				@ConControl	auto refresh on
 	str	r1, [r0, #DMC_CONCONTROL]
-# bl led1_off		
+	
 	ldr	r1, =0xFFFF00FF				@PwrdnConfig
 	str	r1, [r0, #DMC_PWRDNCONFIG]
 		
@@ -381,15 +366,7 @@ find_lock_val1:
 
 	ldr	r1, =0x05100000				@DirectCmd	chip1 REFA
 	str	r1, [r0, #DMC_DIRECTCMD]
-	
-delay_1ms:
-	mov r11, #0
-	ldr r12, =0x30D40 @200MHz = 0x30D40
-delay_:
-	add r11, r11, #0x1
-	cmp r11, r12
-	bne delay_
-	
+
 	ldr	r1, =0x00100442				@DirectCmd	chip1 MRS (MEM DLL unreset)
 	str	r1, [r0, #DMC_DIRECTCMD]
 

@@ -12,24 +12,24 @@
 
 ENTRY(led1_on)
 #GPC0CON_3 0xE020_0060
-ldr r11, =0xE0200060
+ldr r10, =0xE0200060
 ldr r12, =0x00001000
-str r12,  [r11]
+str r12,  [r10]
 #GPC0DAT_3 0xE0200064
-ldr r11, =0xE0200064
+ldr r10, =0xE0200064
 ldr r12, =0x00000008
-str r12, [r11]
+str r12, [r10]
 mov pc, lr
 ENDPROC(led1_on)
 
 ENTRY(led1_off)
 #GPC0CON_3 0xE020_0060
-ldr r11, =0xE0200060
+ldr r10, =0xE0200060
 ldr r12, =0x00001000
-str r12,  [r11]
+str r12,  [r10]
 #GPC0DAT_3 0xE0200064
-ldr r11, =0xE0200064
+ldr r10, =0xE0200064
 ldr r12, =0x00000000
-str r12, [r11]
+str r12, [r10]
 mov pc, lr
 ENDPROC(led1_off)

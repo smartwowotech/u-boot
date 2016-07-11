@@ -22,9 +22,9 @@
  */
 
 	.globl lowlevel_init
-lowlevel_init:  @ 在16K之内,不需要修改 lds 脚本
+lowlevel_init: 
 	@ bl led1_on
-	mov	r11, lr
+	mov	r11, lr   @ ?:R11????,?????????bl???
 
 	/* r5 has always zero */
 	mov	r5, #0
@@ -205,7 +205,7 @@ skip_check_didle:
 	ldr r4, =0x1234abcf
 	bl my_uart1_display
 	
-	ldr r0, =0x100f
+	ldr r0, =0x100d  @memory ??100B, ???
 	ldr r1, =0x30000000
 	str r0, [r1]
 	ldr r4, [r1]

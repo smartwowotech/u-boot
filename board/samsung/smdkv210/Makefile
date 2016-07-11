@@ -9,5 +9,5 @@
 #
 
 obj-y	:= smdkv210.o onenand.o
-obj-y	+= lowlevel_init.o
+extra-y	:= lowlevel_init.o
 obj-y 	+= s5pv210/

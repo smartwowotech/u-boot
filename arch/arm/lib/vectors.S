@@ -44,14 +44,20 @@
  *
  *************************************************************************
  */
-
+ /*
+  *lds中定义vectors.S该文件为第一链接,存放异常向量表,
+  *1.在函数入口函数_start, 之前添加4个字(16Byte)用于CPU check
+  */
+	.word 0x00002000
+	.word 0x00000000
+	.word 0x00000000
+	.word 0x00000000
 _start:
 
 #ifdef CONFIG_SYS_DV_NOR_BOOT_CFG
-	.word	CONFIG_SYS_DV_NOR_BOOT_CFG
+#	.word	CONFIG_SYS_DV_NOR_BOOT_CFG
 #endif
-
-	b	reset
+	b	reset   @跳转到arch/arm/cpu/armv7/start.S 中运行
 	ldr	pc, _undefined_instruction
 	ldr	pc, _software_interrupt
 	ldr	pc, _prefetch_abort

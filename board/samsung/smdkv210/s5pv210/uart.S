@@ -41,11 +41,11 @@ ENTRY(my_uart1_asm_init)
 ENDPROC(my_uart1_asm_init)	
 
 delay:
-	mov r11, #0
+	mov r9, #0
 	ldr r12, =0xBEBC200 @200MHz = 0xBEBC200
 delay_:
-	add r11, r11, #0x1
-	cmp r11, r12
+	add r9, r9, #0x1
+	cmp r9, r12
 	bne delay_
 	mov pc, lr
 	
@@ -56,14 +56,14 @@ ENTRY(my_uart1_display)
 	@mov r4, #0
 	mov r5, #0
 display_:
-	lsr r11, r12, r10      @r12中的值 逻辑右移 R10(第一次：移动28,第二次:移动24bit...一次只能打印1byte)
-	and r11, r11, #0xf     @ascii 值4bit
+	lsr r9, r12, r10      @r12中的值 逻辑右移 R10(第一次：移动28,第二次:移动24bit...一次只能打印1byte)
+	and r9, r9, #0xf     @ascii 值4bit
 	
-	cmp r11, #0x9          @跟9比较，大于说明是字符
-	addhi r11, r11, #0x37    @无符号 >,字符 加37
-	addls r11, r11, #0x30  @无符号 <=
-	str r11, [r0]			@direction print
-	@add r4, r11, r4 , lsl #4  @save result
+	cmp r9, #0x9          @跟9比较，大于说明是字符
+	addhi r9, r9, #0x37    @无符号 >,字符 加37
+	addls r9, r9, #0x30  @无符号 <=
+	str r9, [r0]			@direction print
+	@add r4, r9, r4 , lsl #4  @save result
 	sub r10, r10, #4
 	cmp r10, #-4
 	bne display_
